@@ -13,14 +13,14 @@ rem Run the Python script with logging
 echo -----------------------------------------------------------------
 echo START U810x checking
 
-for /f "delims=" %%A in ('D:\PortableApps\WPy64-38123\pypy3.8-v7.3.9-win64\python.exe D:\optimation\u810x_detection\read_csv_v3.3.py') do (
+for /f "delims=" %%A in ('py cid.py') do (
     echo [%dtf%] %%A >> "%LOG_FILE%"
     echo %%A
 )
 echo -----------------------------------------------------------------
 echo START Cleaning
 
-for /f "delims=" %%A in ('D:\PortableApps\WPy64-38123\pypy3.8-v7.3.9-win64\python.exe D:\optimation\u810x_detection\cleaning.py') do (
+for /f "delims=" %%A in ('py housekeeping.py') do (
     echo [%dtf%] %%A >> "%LOG_FILE%"
     echo %%A
 )
