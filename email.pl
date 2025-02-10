@@ -6,14 +6,13 @@ send_email($ARGV[0], $ARGV[1]);
 
 sub send_email {
 
-	my $sender = 'host-team@infineon.com';
-	my @receiver = ('taufik.hidayat@infineon.com','rizki.kasmuda@infineon.com');
-	my $subject = "Subject: [test $_[0]] ";
+	my $sender = 'noreply@example.com';
+	my @receiver = ('person1@example.com','person2@example.com');
+	my $subject = "Subject: [Result $_[0]] ";
 	my $emailBody = $_[1];
-	my $link = "//e2asia12.intra.infineon.com/eSquare_user/kasmuda_ap/work/Database_ChipID_Checking/database";
 
 	my $smtp = Net::SMTP->new(
-		'smtp.intra.infineon.com',
+		'smtp.example.com',
 		Timeout => 20,
 		Debug   => 1,
 	);
@@ -28,7 +27,6 @@ sub send_email {
 		$smtp->datasend( "Subject: $subject \n");
 		$smtp->datasend( "\n");
 		$smtp->datasend("$emailBody\n");
-		$smtp->datasend("$link\n");
 		$smtp->datasend("\n");
 		$smtp->dataend();
 		$smtp->quit();
