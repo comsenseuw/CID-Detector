@@ -16,10 +16,10 @@ for file_name in os.listdir(folder_path):
             print(file_path+" Housekeeping has completed")
 
 for file_extracted in os.listdir(extracted_path):
-    file_ebs = os.path.join(extracted_path, file_extracted)
-    file_modified_time = os.path.getmtime(file_ebs)
+    file_db = os.path.join(extracted_path, file_extracted)
+    file_modified_time = os.path.getmtime(file_db)
     time_difference = current_time - file_modified_time
     time_difference_days = time_difference / (24 * 60 * 60)
     if time_difference_days > 30:
-        os.remove(file_ebs)
-        print(file_ebs+" Housekeeping has completed")
+        os.remove(file_db)
+        print(file_db+" Housekeeping has completed")
