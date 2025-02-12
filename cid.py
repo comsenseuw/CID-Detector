@@ -26,7 +26,7 @@ def send_email(subject, message):
 def copydb():
     print("Copying processed file to the web share...")
     source_file = "table_data.csv"
-    destination_path = "//servername/web_shares$/CID/application/data/table_data.csv"
+    destination_path = "//servername/web_shares$/data/table_data.csv"
     shutil.copy2(source_file, destination_path)
     print("Processed file copied successfully!")
 
@@ -98,10 +98,10 @@ with open(latest_file_path, 'r') as input_file:
     print(f"Opening input file {latest_file_path}...")
     infile_reader = list(csv.DictReader(input_file))
     for row in infile_reader:
-        if (row['Transaction Qty Out'] != 0 and row['Transcode Short Name'] == 'MVOU' and row['Type'].startswith('UU99')):
+        if (row['Qty Out'] != 0 and row['Transcode'] == 'TEST123' and row['Type'].startswith('TEST123')):
             # check if lot already processed
             lot_number = row['Lot Number']
-            system_qty = row['Transaction Qty Out']
+            system_qty = row['Qty Out']
             if lot_number in ok_lots:
                 processed = True
                 print(f"Lot {lot_number} already processed, skipping...")
@@ -113,7 +113,7 @@ with open(latest_file_path, 'r') as input_file:
                     with open(lot_path, 'r') as lp:
                         data_reader = list(csv.DictReader(lp))
                         lp_data = data_reader[1]
-                        tested_date = f"['{lp_data['BeginTimestamp;datetime']}']"
+                        tested_date = f"['{lp_data['BeginTimestamp']}']"
                         print(lot_number+" Tested date: "+tested_date)
                         for t_date, attributes in fail_lots.items():
                             if 'tested' in attributes and attributes['tested'] == tested_date:
@@ -157,9 +157,9 @@ with open(latest_file_path, 'r') as input_file:
                             if row['TestType'] != '':
                                 test_seq.append(row['TestType'])
                             if row['BeginTimestamp;datetime'] != '':
-                                test_date.append(row['BeginTimestamp;datetime'])
-                            if row['BIN'] == '1':
-                                x = row['BIN'] + "_" + row['ID'] + "_" + row['WNR'] + "_" + row['X'] + "_" + row['Y']
+                                test_date.append(row['BeginTimestamp'])
+                            if row['Num'] == '1':
+                                x = row['Num'] + "_" + row['ID'] + "_" + row['WNR'] + "_" + row['X'] + "_" + row['Y']
                                 list_cid.append(x)
 
                     # Count the occurrences of each element in the list
@@ -175,11 +175,11 @@ with open(latest_file_path, 'r') as input_file:
                     # Print Summary
                     summary_text.append("Header:")
                     summary_text.append("   lot              : " + first_data['lot'])
-                    summary_text.append("   BeginTimestamp   : " + first_data['BeginTimestamp;datetime'])
+                    summary_text.append("   BeginTimestamp   : " + first_data['BeginTimestamp'])
                     summary_text.append("")
                     summary_text.append("Criteria summary:")
-                    summary_text.append("   Unique CID Qty    : " + str(unique_count))
-                    summary_text.append("   Redundant CID Qty : " + str(len(list_cid) - unique_count))
+                    summary_text.append("   Unique ID Qty    : " + str(unique_count))
+                    summary_text.append("   Redundant ID Qty : " + str(len(list_cid) - unique_count))
                     summary_text.append("   System Qty        : " + system_qty)
 
                     if int(system_qty) > unique_count:
